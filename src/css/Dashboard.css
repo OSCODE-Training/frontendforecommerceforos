@@ -1,0 +1,17 @@
+.main-container-dashboard{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    
+}
+.second-container-dashboard{
+    width: 100%;
+    display: flex;
+    margin-top: 40px;
+    
+}
+.third-container-dashboard{
+    width: 100%;
+    display: flex;
+    margin-top: 40px;
+}

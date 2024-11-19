@@ -1,0 +1,15 @@
+.popup-main-container{
+    width: 40vw;
+    height: 50vh;
+    background: #fff;
+    position: absolute;
+    top: -50%;
+    left: 30%;
+    border-radius: 5px;
+}
+@media screen and (max-width: 750px) {
+    .popup-main-container{
+        width: 50vw;
+        height: 30vh;
+    }
+}

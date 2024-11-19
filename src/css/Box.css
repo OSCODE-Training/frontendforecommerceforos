@@ -1,0 +1,37 @@
+.box-main-container{
+    width: 90%;
+    height: 20vh;
+    background:rgb(155, 148, 148);
+    border-radius: 3px;
+    margin: 2%;
+    box-shadow: 1px 2px 8px 1px black;
+
+}
+.h1-box{
+    padding: 5px;
+    text-decoration: underline;
+    text-underline-position: under;
+}
+.total-box{
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.total-text{
+    margin-right: 5px;
+    text-transform: uppercase;
+}
+.digit-box{
+ font-weight: bolder;   
+}
+@media screen and (max-width: 750px) {
+    .box-main-container{
+        width: 100%;
+    }
+    .h1-box{
+        padding: 5px;
+        font-size: large;
+        font-weight: bold;
+    }
+}
