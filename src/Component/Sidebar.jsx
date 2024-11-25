@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React, { lazy, Suspense, useState } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { TbTransactionRupee } from "react-icons/tb";
 import { RiMessage2Fill } from "react-icons/ri";
-import { MdPersonAddAlt1,MdModeEditOutline } from "react-icons/md";
+import { MdPersonAddAlt1 } from "react-icons/md";
 import { MdAdd } from "react-icons/md";
 import {
     FaTh,
@@ -18,13 +18,16 @@ import Product from '../pages/OrderList';
 import Comment from '../pages/Comment';
 import OrderList from '../pages/OrderList';
 import Header from './Header';
-import UserAdd from '../pages/UserAdd';
-import DisplayUserDaata from '../pages/DisplayUserData';
-import CategoryAdd from '../pages/CategoryAdd';
-import DisplayCategoryData from '../pages/DisplayCategoryData';
-import ProductAdd from '../pages/ProductAdd';
-import DisplayProductData from '../pages/DisplayProductData';
-import Dashboard from '../pages/Dashboard';
+import Loder from './loder';
+const UserAdd = lazy(()=>import("../pages/UserAdd"));
+const DisplayUserDaata = lazy(()=>import("../pages/DisplayUserData"));
+const CategoryAdd = lazy(()=>import("../pages/CategoryAdd"));
+const DisplayCategoryData = lazy(()=>import("../pages/DisplayCategoryData"));
+const  ProductAdd = lazy(()=>import("../pages/ProductAdd"));
+const  DisplayProductData = lazy(()=>import("../pages/DisplayProductData"));
+const  Dashboard = lazy(()=>import("../pages/Dashboard"));
+
+
 const Sidebar = ({ children }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeMenu, setActiveMenu] = useState(null); // Tracks which menu's children are visible
@@ -97,11 +100,15 @@ const Sidebar = ({ children }) => {
             icon: <RiMessage2Fill />,
             children: [] // No children for Product List
         }
+        
     ];
+
+
+    
 
     return (
         <div className="container">
-            <div style={{ width: isOpen ? "200px" : "50px" }} className="sidebar">
+            <div style={{ width: isOpen ? "200px" : "50px" ,position:"sticky",top:0,height:"97.1vh"}} className="sidebar">
                 <div className="top_section">
                     <h1 style={{ display: isOpen ? "block" : "none" }} className="logo">
                         <img
@@ -140,8 +147,8 @@ const Sidebar = ({ children }) => {
                             <ul className="sub_menu">
                                 {menu.children.map((child, childIndex) => (
                                     <li key={childIndex}  >
-                                        <NavLink to={child.path} className="sub_link">
-                                           <span style={{marginRight:"20px"}}>{child.icon}</span> {isOpen?child.name:''}
+                                        <NavLink to={child.path} className="sub_link" >
+                                           <span style={{marginRight:"20px"}} >{child.icon}</span> {isOpen?child.name:''}
                                         </NavLink>
                                     </li>
                                 ))}
@@ -157,17 +164,19 @@ const Sidebar = ({ children }) => {
 
             <main style={{padding:0}}>
                 <Header/>
+                <Suspense fallback={<div style={{width:"100%",display:"flex",justifyContent:"center",marginTop:"20px"}}><Loder/></div>}>
                 <Routes>
                     {/* Parent Routes */}
+                    <Route path="/" element={<Navigate to="/dashboard/dashboard" replace />} />
                     <Route element={<UserAdd />} path="/user" />
                     <Route element={<DisplayUserDaata />} path="/show_table_user" />
+                    
+
                     <Route element={<CategoryAdd />} path="/category" />
                     <Route element={<DisplayCategoryData />} path="/show_table_category" />
                     <Route element={<ProductAdd />} path="/product" />
                     <Route element={<DisplayProductData />} path="/show_all_product" />
                     <Route element={<Dashboard />} path="/dashboard" />
-
-
 
                     <Route element={<Product />} path="/product_show" />
                     <Route path="/comment" element={<Comment />} />
@@ -175,6 +184,7 @@ const Sidebar = ({ children }) => {
 
                     
                 </Routes>
+                </Suspense>
             </main>
         </div>
     );

@@ -7,7 +7,7 @@ const Dashboard = () => {
     const [totaluser,setTotalUser]=useState()
 
     const fetchData=async()=>{
-        const category  = await getData('category/get_all_category')
+        const category  = await getData('categoryu/get_all_category')
         setTotalCategory(category?.data.length)
 
         const user  = await getData('user/get_all_user')

@@ -1,11 +1,13 @@
 .showtable-main-container{
     background-color: rgb(215, 222, 222);
-    height: 90vh;
-    display: flex;
+    /* height: auto; */
+    min-height: 92vh;
+        display: flex;
     flex-direction: column;
     gap: 20px;
     /* justify-content: center; */
     align-items: center;
+    
 }
 .showtable-secon-container{
     width: 90%;

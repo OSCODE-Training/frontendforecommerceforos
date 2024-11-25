@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import "../css/UserAdd.css"
 import { postData } from '../services/fetchNodeServices';
+import Loder from '../Component/loder';
 
 const UserAdd = () => {
     const [name,setName]=useState('')
@@ -10,6 +11,8 @@ const UserAdd = () => {
     const [phoneno,setPhoneNo]=useState('')
     const [role,setRole]=useState('')
     const [picture,setPicture]=useState({url:'',bytes:''})
+    const [loderstatus,setLoderStatus]=useState(false)
+
     // const []
 
     const handleIcon=(event)=>{
@@ -57,6 +60,7 @@ const UserAdd = () => {
         var error=validation()
        if(error)
        {
+        setLoderStatus(true)
         var formData = new FormData()
         formData.append('username',name || "")  
         formData.append('password',password)  
@@ -68,14 +72,19 @@ const UserAdd = () => {
         // console.log("aaaaaaaaeeeeeeeeeeeeeeeeeee:",)
         // var body={"username":name,"password":password,"emaildid":email,"address":address,"phoneno":phoneno,"picture":picture.bytes,"role":role}
         var result=await postData('user/create_user',formData)
-        alert(result?.message)
+        if(result?.status)
+            {   
+                setLoderStatus(false)
+                alert(result?.message)
+                
+            }
        }else{
         alert("Please Fill All The Fields")
        }
 
     }   
 
-    console.log(name+" "+password+" "+email+" "+address+" "+phoneno+" "+role+" "+picture.url)
+    // console.log(name+" "+password+" "+email+" "+address+" "+phoneno+" "+role+" "+picture.url)
    
     return (
         <div className='add-data-form-main-container'>
@@ -86,10 +95,10 @@ const UserAdd = () => {
                 <input className='useradd-input' onChange={(e)=>setAddress(e.target.value)} type='address' placeholder='Address'/></div>
             <div className='useradd-second-container'>
             <input className='useradd-input' onChange={(e)=>setPhoneNo(e.target.value)} type='number' placeholder='Phone Number'/>
-            <select className='useradd-input' onChange={(e)=>setRole(e.target.value)}><option value="">- Select Role -</option><option>User</option><option>Admin</option></select>
+            <select className='useradd-input' onChange={(e)=>setRole(e.target.value)}><option value="">- Select Role -</option><option value={"user"}>User</option><option value={"admin"}>Admin</option></select>
                 </div>
             <div className='useradd-second-container'> 
-            <input className='useradd-input' type='file' accept="images/*" multiple onChange={handleIcon}/><input style={{cursor:"pointer"}} onClick={handleSubmit} className='useradd-input' type='submit' value="submit"/>
+            <input className='useradd-input' type='file' accept="images/*" multiple onChange={handleIcon}/><div  onClick={handleSubmit} className='submit-btn-user'  >{loderstatus?<Loder/>:<span>Submit</span>}</div>
                 </div>  
             </div>
         </div>

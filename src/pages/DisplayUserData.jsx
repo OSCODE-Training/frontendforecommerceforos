@@ -1,26 +1,31 @@
-import { useEffect, useState } from "react";
-import ShowTable from "../Component/ShowTable";
-import { getData } from "../services/fetchNodeServices";
-
-
-
+import { lazy, Suspense, useEffect, useState } from "react";
+const ShowTable = lazy(()=>import("../Component/ShowTable"))
+import { deleteData, getData } from "../services/fetchNodeServices";
+import Loder from "../Component/loder";
 
  const DisplayUserDaata=()=>{
-    // const [data,setData]=useState([{"name":'ajay',"password":"ajay@123","emailid":"ajaysikata@gmail.com","address":"gram post sikhata","phoneno":6261448735,"role":"user","picture":'https://p.kindpng.com/picc/s/112-1127797_srikrishna-shri-krishna-png-hd-transparent-png.png'},{"name":'ajay',"password":"ajay@123","email":"ajaysikata@gmail.com","address":"gram post sikhata","phoneno":6261448735,"role":"user","picture":'aa.png'},{"name":'ajay',"password":"ajay@123","email":"ajaysikata@gmail.com","address":"gram post sikhata","phoneno":6261448735,"role":"user","picture":'aa.png'},{"name":'ajay',"password":"ajay@123","email":"ajaysikata@gmail.com","address":"gram post sikhata","phoneno":6261448735,"role":"user","picture":'aa.png'}])
     const [data,setData]=useState([])
+    const [refresh,setRefresh]=useState(false)
 
     const fetchData=async()=>{
         const result  = await getData('user/get_all_user')
         setData(result.data)
         }
-      
-        useEffect(function(){
-            fetchData()
-        },[])
+        
 
+        
+        useEffect(function(){ fetchData()  },[])
+        useEffect(() => {
+            if (refresh) {
+                fetchData();
+                setRefresh(false); // Reset refresh state
+            }
+        }, [refresh]);
 
     return(<>
-    <ShowTable data={data}/>
+    <Suspense fallback={<div style={{width:"100%",display:"flex",justifyContent:"center",marginTop:"20px"}}><Loder/></div>}>
+    <ShowTable data={data} refresh={refresh} setRefresh={setRefresh}/>
+    </Suspense>
     </>)
 }
 

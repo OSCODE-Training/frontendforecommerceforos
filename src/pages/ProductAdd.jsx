@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "../css/UserAdd.css"
 import { getData, postData } from '../services/fetchNodeServices';
+import Loder from '../Component/loder';
 
 const ProductAdd = () => {
     const [allcategorydata,setAllCategoryData]=useState([])
@@ -9,9 +10,11 @@ const ProductAdd = () => {
     const [description,setDescription]=useState('')
     const [price,setPrice]=useState()
     const [image,setImage]=useState({url:'',bytes:''})
+    const [loderstatus,setLoderStatus]=useState(false)
+
 
     const fetchData=async()=>{
-        const result  = await getData('category/get_all_category')
+        const result  = await getData('categoryu/get_all_category')
         setAllCategoryData(result.data)
         }
       
@@ -48,7 +51,7 @@ const ProductAdd = () => {
             var error=validation()
            if(error)
            {
-            
+            setLoderStatus(true)
             var formData = new FormData()   
             formData.append("categoryid",categoryid)
             formData.append("productname",productname)
@@ -56,7 +59,12 @@ const ProductAdd = () => {
             formData.append("price",price)
             formData.append("image",image.bytes)
             const result = await postData("product/add_new_product",formData)
-            alert(result.message)
+            if(result?.status)
+                {   
+                    setLoderStatus(false)
+                    alert(result?.message)
+                    
+                }
                }
            else{
             alert("no")
@@ -83,7 +91,7 @@ const ProductAdd = () => {
                 <input className='useradd-input' type='number'onChange={(e)=>setPrice(e.target.value)} placeholder='Price'/></div>
           
             <div className='useradd-second-container'> 
-            <input className='useradd-input' type='file' accept="images/*" multiple onChange={handleIcon} /><input className='useradd-input' type='submit' onClick={handleSubmit} value="submit"/>
+            <input className='useradd-input' type='file' accept="images/*" multiple onChange={handleIcon} /><div className='submit-btn-user'  onClick={handleSubmit} >{loderstatus?<Loder/>:<span>Submit</span>}</div>
                 </div>  
             </div>
         </div>
